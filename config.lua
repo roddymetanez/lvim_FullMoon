@@ -5,7 +5,7 @@ vim.opt.tabstop = 4
 vim.opt.expandtab = true
 -- =========================================
 lvim.keys.normal_mode["<C-s>"] = ":<Esc>:w<CR>"
-lvim.format_on_save = false
+lvim.format_on_save = true
 lvim.leader = " "
 lvim.colorscheme = "tokyonight" -- set to a custom theme
 lvim.builtin.time_based_themes = true -- set false to use your own configured theme
