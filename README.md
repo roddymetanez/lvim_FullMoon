@@ -1,5 +1,7 @@
 # Bloated LunarVim
 
+*RMT - Fork from AbzCoding/Lvim*
+
 Do not use as is, use it as a source of inspiration.
 
 I've customized my ZSH/Tmux/[Wezterm](https://github.com/abzcoding/wezterm) too much, so it might not work properly 😅
