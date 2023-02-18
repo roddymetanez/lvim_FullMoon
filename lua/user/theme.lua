@@ -1,5 +1,53 @@
 local M = {}
 
+M.tokyonight = function()
+  -- require("tokyonight").setup {
+  lvim.builtin.theme.tokyonight.options = {
+    style = "storm",
+    transparent = lvim.transparent_window,
+    terminal_colors = true,
+    styles = {
+      comments = {},
+      keywords = { italic = true },
+      functions = {},
+      variables = {},
+      sidebars = "dark",
+      floats = "dark",
+    },
+    sidebars = {
+      "qf",
+      "vista_kind",
+      "terminal",
+      "lazy",
+      "spectre_panel",
+      "NeogitStatus",
+      "help",
+    },
+    day_brightness = 0.3,
+    hide_inactive_statusline = true,
+    dim_inactive = true,
+    lualine_bold = false, -- When `true`, section headers in the lualine theme will be bold
+
+    on_colors = function(colors)
+      colors.git = { change = "#6183bb", add = "#449dab", delete = "#f7768e", conflict = "#bb7a61" }
+      colors.bg_dark = "#1a1e30"
+      colors.bg_dim = "#1f2335"
+      colors.bg_float = "#1a1e30"
+    end,
+    on_highlights = function(hl, c)
+      c.bg_dark = "#1a1e30"
+      c.bg_dim = "#1f2335"
+      c.bg_float = "#1a1e30"
+      local current_colors = M.colors.tokyonight_colors
+      hl.NormalFloat = { fg = current_colors.fg, bg = "#181924" }
+      hl.Cursor = { fg = current_colors.bg, bg = current_colors.fg }
+      hl.NormalNC = { fg = current_colors.fg_dark, bg = "#1c1d28" }
+      hl.Normal = { fg = current_colors.fg, bg = "#1f2335" }
+      hl.CursorLineNr = { fg = current_colors.orange, style = "bold" }
+    end,
+  }
+end
+
 M.rose_pine = function()
   require("rose-pine").setup {
     ---@usage 'main'|'moon'
@@ -143,7 +191,7 @@ M.catppuccin = function()
       overseer = lvim.builtin.task_runner == "overseer",
       symbols_outline = lvim.builtin.tag_provider == "symbols-outline",
       which_key = lvim.builtin.which_key.active,
-      lightspeed = lvim.builtin.motion_provider == "lightspeed",
+      leap = lvim.builtin.motion_provider == "leap",
       hop = lvim.builtin.motion_provider == "hop",
     },
     highlight_overrides = {
@@ -386,7 +434,7 @@ M.hi_colors = function()
   return colors
 end
 
-M.telescope_theme = function()
+M.telescope_theme = function(colorset)
   local function link(group, other)
     vim.cmd("highlight! link " .. group .. " " .. other)
   end
@@ -410,8 +458,10 @@ M.telescope_theme = function()
 
   -- NOTE: these are my personal preferences
   if lvim.builtin.time_based_themes then
-    local _time = os.date "*t"
-    local current_colors = M.current_colors()
+    local current_colors = colorset
+    if colorset == nil or #colorset == 0 then
+      current_colors = M.current_colors()
+    end
     set_fg_bg("Hlargs", current_colors.hlargs, "none")
     set_fg_bg("CmpBorder", current_colors.cmp_border, current_colors.cmp_border)
     link("NoiceCmdlinePopupBorder", "CmpBorder")
@@ -428,14 +478,6 @@ M.telescope_theme = function()
     set_fg_bg("WinSeparator", current_colors.bg_alt, current_colors.bg_alt)
     set_fg_bg("SignColumn", current_colors.bg, "NONE")
     set_fg_bg("SignColumnSB", current_colors.bg, "NONE")
-    if _time.hour >= 9 and _time.hour < 17 then
-      -- HACK: change highlights for tokyonight theme
-      set_fg_bg("NormalFloat", current_colors.fg, "#181924")
-      set_fg_bg("Cursor", current_colors.bg, current_colors.fg)
-      set_fg_bg("NormalNC", current_colors.fg_dark, "#1c1d28")
-      set_fg_bg("Normal", current_colors.fg, "#1f2335")
-      set_fg_bg("CursorLineNr", current_colors.orange, "bold")
-    end
   end
 
   local colors = M.hi_colors()
@@ -454,6 +496,24 @@ M.telescope_theme = function()
   set_fg_bg("TelescopeResultsTitle", colors.bg, colors.bg)
   set_fg_bg("TelescopeResultsBorder", colors.bg, colors.bg)
   set_bg("TelescopeSelection", colors.bg_alt)
+end
+
+M.toggle_theme = function()
+  local theme = lvim.colorscheme
+  local colorset = require("user.theme").colors.tokyonight_colors
+  if theme == "tokyonight" then
+    lvim.colorscheme = "catppuccin-mocha"
+    colorset = require("user.theme").colors.catppuccin_colors
+  else
+    lvim.colorscheme = "tokyonight"
+  end
+  if vim.g.toggle_theme_icon == "   " then
+    vim.g.toggle_theme_icon = "   "
+  else
+    vim.g.toggle_theme_icon = "   "
+  end
+  vim.cmd("colorscheme " .. lvim.colorscheme)
+  require("user.theme").telescope_theme(colorset)
 end
 
 return M

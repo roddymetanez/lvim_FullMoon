@@ -64,17 +64,6 @@ M.set_hop_keymaps = function()
   )
 end
 
-M.set_lightspeed_keymaps = function()
-  vim.cmd [[
-nmap s <Plug>Lightspeed_s
-nmap S <Plug>Lightspeed_S
-nmap <expr> f reg_recording() . reg_executing() == "" ? "<Plug>Lightspeed_f" : "f"
-nmap <expr> F reg_recording() . reg_executing() == "" ? "<Plug>Lightspeed_F" : "F"
-nmap <expr> t reg_recording() . reg_executing() == "" ? "<Plug>Lightspeed_t" : "t"
-nmap <expr> T reg_recording() . reg_executing() == "" ? "<Plug>Lightspeed_T" : "T"
-  ]]
-end
-
 M.set_hlslens_keymaps = function()
   local opts = { noremap = true, silent = true }
   vim.api.nvim_set_keymap(
@@ -212,7 +201,18 @@ M.config = function()
   }
   lvim.keys.insert_mode["<A-a>"] = "<ESC>ggVG<CR>"
   lvim.keys.insert_mode["jk"] = "<ESC>:w<CR>"
-  lvim.keys.insert_mode["<C-s>"] = "<cmd>lua vim.lsp.buf.signature_help()<cr>"
+  if lvim.builtin.noice.active then
+    lvim.keys.insert_mode["<C-s>"] = function()
+      local params = vim.lsp.util.make_position_params(0, "utf-16")
+      vim.lsp.buf_request(0, "textDocument/signatureHelp", params, function(err, result, ctx)
+        require("noice.lsp").signature(err, result, ctx, {
+          trigger = true,
+        })
+      end)
+    end
+  else
+    lvim.keys.insert_mode["<C-s>"] = "<cmd>lua vim.lsp.buf.signature_help()<CR>"
+  end
   lvim.keys.insert_mode["<A-s>"] =
     "<cmd>lua require('telescope').extensions.luasnip.luasnip(require('telescope.themes').get_cursor({}))<CR>"
   lvim.keys.command_mode["w!!"] = "execute 'silent! write !sudo tee % >/dev/null' <bar> edit!"
@@ -278,7 +278,7 @@ M.config = function()
     M.set_lsp_lines_keymap()
   end
   if lvim.builtin.tree_provider == "neo-tree" then
-    lvim.builtin.which_key.mappings["e"] = { ":NeoTreeRevealToggle<CR>", " Explorer" }
+    lvim.builtin.which_key.mappings["e"] = { "<cmd>Neotree toggle<CR>", " Explorer" }
   end
   lvim.builtin.which_key.mappings["F"] = {
     name = " Find",
@@ -306,6 +306,9 @@ M.config = function()
   lvim.builtin.which_key.mappings["H"] = " Help"
   lvim.builtin.which_key.mappings["h"] = { "<cmd>nohlsearch<CR>", " No Highlight" }
   lvim.builtin.which_key.mappings.g.name = " Git"
+  if lvim.builtin.inlay_hints.active then
+    lvim.builtin.which_key.mappings["I"] = { "<cmd>lua require('lsp-inlayhints').toggle()<cr>", " Toggle Inlay" }
+  end
   lvim.builtin.which_key.mappings.l.name = " LSP"
   lvim.builtin.which_key.mappings["f"] = {
     require("user.telescope").find_project_files,
@@ -353,12 +356,16 @@ M.config = function()
     "<cmd>hi LspReferenceRead cterm=bold ctermbg=red guibg=#24283b<cr><cmd>hi LspReferenceText cterm=bold ctermbg=red guibg=#24283b<cr><cmd>hi LspReferenceWrite cterm=bold ctermbg=red guibg=#24283b<cr>",
     "Clear HL",
   }
+  if lvim.builtin.mind.active then
+    M.set_mind_keymaps()
+  end
   if lvim.builtin.persistence then
     lvim.builtin.which_key.mappings["q"] = {
       name = " Quit",
       d = { "<cmd>lua require('persistence').stop()<cr> | :qa!<cr>", "Quit without saving session" },
       l = { "<cmd>lua require('persistence').load(last=true)<cr>", "Restore last session" },
       s = { "<cmd>lua require('persistence').load()<cr>", "Restore for current dir" },
+      q = { "<cmd>confirm q<CR>", "Quit" },
     }
   end
   lvim.builtin.which_key.mappings["n"] = {
@@ -375,13 +382,19 @@ M.config = function()
     lvim.builtin.which_key.mappings["o"] = { "<cmd>Vista!!<cr>", "Vista" }
   end
   lvim.builtin.which_key.mappings.L.name = " LunarVim"
-  lvim.builtin.which_key.mappings.p.name = " Packer"
+  lvim.builtin.which_key.mappings.p.name = " Lazy"
   lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", " Projects" }
   lvim.builtin.which_key.mappings["R"] = {
     name = " Replace",
     f = { "<cmd>lua require('spectre').open_file_search()<cr>", "Current Buffer" },
     p = { "<cmd>lua require('spectre').open()<cr>", "Project" },
     w = { "<cmd>lua require('spectre').open_visual({select_word=true})<cr>", "Replace Word" },
+    s = {
+      function()
+        require("ssr").open()
+      end,
+      "Structural replace",
+    },
   }
   lvim.builtin.which_key.mappings.s.name = " Search"
   lvim.builtin.which_key.mappings["ss"] = {
@@ -433,6 +446,12 @@ M.config = function()
     name = " Git",
     s = { "<cmd>lua require 'gitsigns'.stage_hunk()<cr>", "Stage Hunk" },
   }
+  lvim.builtin.which_key.vmappings["r"] = {
+    function()
+      require("ssr").open()
+    end,
+    "Structural replace",
+  }
 
   -- My wezterm is weird
   -- =========================================
@@ -449,6 +468,121 @@ M.config = function()
   whk.register {
     ["]n"] = { "[[:call search('^(@@ .* @@|[<=>|]{7}[<=>|]@!)', 'W')<cr>]]", "next merge conflict" },
     ["[n"] = { "[[:call search('^(@@ .* @@|[<=>|]{7}[<=>|]@!)', 'bW')<cr>]]", "prev merge conflict" },
+  }
+end
+
+M.set_mind_keymaps = function()
+  lvim.builtin.which_key.mappings["M"] = {
+    name = " Mind",
+    c = {
+      function()
+        require("mind").wrap_smart_project_tree_fn(function(args)
+          require("mind.commands").create_node_index(
+            args.get_tree(),
+            require("mind.node").MoveDir.INSIDE_END,
+            args.save_tree,
+            args.opts
+          )
+        end)
+      end,
+      "Create node index",
+    },
+    C = {
+      function()
+        require("mind").wrap_main_tree_fn(function(args)
+          require("mind.commands").create_node_index(
+            args.get_tree(),
+            require("mind.node").MoveDir.INSIDE_END,
+            args.save_tree,
+            args.opts
+          )
+        end)
+      end,
+      "Create node index",
+    },
+    i = {
+      function()
+        vim.notify "initializing project tree"
+        require("mind").wrap_smart_project_tree_fn(function(args)
+          local tree = args.get_tree()
+          local mind_node = require "mind.node"
+
+          local _, tasks = mind_node.get_node_by_path(tree, "/Tasks", true)
+          tasks.icon = "陼"
+
+          local _, backlog = mind_node.get_node_by_path(tree, "/Tasks/Backlog", true)
+          backlog.icon = " "
+
+          local _, on_going = mind_node.get_node_by_path(tree, "/Tasks/On-going", true)
+          on_going.icon = " "
+
+          local _, done = mind_node.get_node_by_path(tree, "/Tasks/Done", true)
+          done.icon = " "
+
+          local _, cancelled = mind_node.get_node_by_path(tree, "/Tasks/Cancelled", true)
+          cancelled.icon = " "
+
+          local _, notes = mind_node.get_node_by_path(tree, "/Notes", true)
+          notes.icon = " "
+
+          args.save_tree()
+        end)
+      end,
+      "Initialize project tree",
+    },
+    l = {
+      function()
+        require("mind").wrap_smart_project_tree_fn(function(args)
+          require("mind.commands").copy_node_link_index(args.get_tree(), nil, args.opts)
+        end)
+      end,
+      "Copy node link index",
+    },
+    L = {
+      function()
+        require("mind").wrap_main_tree_fn(function(args)
+          require("mind.commands").copy_node_link_index(args.get_tree(), nil, args.opts)
+        end)
+      end,
+      "Copy node link index",
+    },
+    j = {
+      function()
+        require("mind").wrap_main_tree_fn(function(args)
+          local tree = args.get_tree()
+          local path = vim.fn.strftime "/Journal/%Y/%b/%d"
+          local _, node = require("mind.node").get_node_by_path(tree, path, true)
+
+          if node == nil then
+            vim.notify("cannot open journal 🙁", vim.log.levels.WARN)
+            return
+          end
+
+          require("mind.commands").open_data(tree, node, args.data_dir, args.save_tree, args.opts)
+          args.save_tree()
+        end)
+      end,
+      "Open journal",
+    },
+    M = { "<cmd>MindOpenMain<CR>", "Open main tree" },
+    z = { "<cmd>MindClose<CR>", "Close" },
+    m = { "<cmd>MindOpenSmartProject<CR>", "Open smart project tree" },
+    s = {
+      function()
+        require("mind").wrap_smart_project_tree_fn(function(args)
+          require("mind.commands").open_data_index(args.get_tree(), args.data_dir, args.save_tree, args.opts)
+        end)
+      end,
+      "Open data index",
+    },
+    S = {
+      function()
+        require("mind").wrap_main_tree_fn(function(args)
+          require("mind.commands").open_data_index(args.get_tree(), args.data_dir, args.save_tree, args.opts)
+        end)
+      end,
+      "Open data index",
+    },
   }
 end
 

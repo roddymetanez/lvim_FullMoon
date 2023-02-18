@@ -51,20 +51,30 @@ M.config = function()
       },
     },
     on_open = function()
+      lvim.builtin.cmp.active = false
       vim.cmd [[
           set foldlevel=10
           lua require("user.zen").hide_diagnostics()
+          lua require('lsp-inlayhints').toggle()
           IndentBlanklineDisable!
           ]]
+      if lvim.builtin.tmux_lualine == false then
+        require("lualine").hide()
+      end
     end,
     on_close = function()
+      lvim.builtin.cmp.active = true
       vim.cmd [[
           set foldlevel=4
           set foldmethod=expr
           set foldexpr=nvim_treesitter#foldexpr()
           lua require("user.zen").show_diagnostics()
+          lua require('lsp-inlayhints').toggle()
           IndentBlanklineEnable!
           ]]
+      if lvim.builtin.tmux_lualine == false then
+        require("lualine").hide { unhide = true }
+      end
     end,
   }
 end

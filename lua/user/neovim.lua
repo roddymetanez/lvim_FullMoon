@@ -35,6 +35,7 @@ M.config = function()
     "hiddenoff",
     "algorithm:minimal",
   }
+  vim.g.toggle_theme_icon = "   "
   vim.opt.wrap = true
   vim.opt.termguicolors = true
   vim.opt.updatetime = 100
@@ -147,6 +148,23 @@ M.config = function()
       end
     end,
   })
+
+  if vim.fn.has "nvim-0.8" == 1 then
+    vim.filetype.add {
+      extension = {
+        fnl = "fennel",
+        wiki = "markdown",
+      },
+      filename = {
+        ["go.sum"] = "gosum",
+        ["go.mod"] = "gomod",
+      },
+      pattern = {
+        ["*.tml"] = "gohtmltmpl",
+        ["%.env.*"] = "sh",
+      },
+    }
+  end
 
   if vim.g.neovide then
     vim.g.neovide_cursor_animation_length = 0.01
