@@ -70,7 +70,7 @@ M.config = function()
       "folke/trouble.nvim",
       config = function()
         require("trouble").setup {
-          auto_open = true,
+          auto_open = false,
           auto_close = true,
           padding = false,
           height = 10,
@@ -218,6 +218,18 @@ M.config = function()
       config = function()
         require("neogen").setup {
           enabled = true,
+          languages = {
+            lua = {
+              template = {
+                annotation_convention = "emmylua",
+              },
+            },
+            csharp = {
+              template = {
+                annotation_convention = "xmldoc",
+              },
+            },
+          },
         }
       end,
       event = "InsertEnter",
@@ -714,6 +726,27 @@ M.config = function()
       requires = { "nvim-treesitter/nvim-treesitter" },
       disable = not lvim.builtin.colored_args,
     },
+    --  -- RMT
+    {
+      "kylechui/nvim-surround",
+      tag = "*", -- Use for stability; omit to use `main` branch for the latest features
+      config = function()
+        require("nvim-surround").setup {
+          -- Configuration here, or leave empty to use defaults
+        }
+      end,
+    },
+    {
+      "rcarriga/nvim-dap-ui",
+      requires = { "mfussenegger/nvim-dap" },
+      config = function()
+        require("dapui").setup()
+      end,
+    },
+    -- {
+    --   "jlcrochet/vim-razor",
+    -- },
+    -- -- End RMT
     -- TODO: set this up when https://github.com/neovim/neovim/pull/20130 is merged
     -- {
     --   "lvimuser/lsp-inlayhints.nvim",
@@ -721,6 +754,16 @@ M.config = function()
     --   config = function()
     --     require("lsp-inlayhints").setup()
     --   end,
+    -- },
+    -- {
+    --   "ray-x/navigator.lua",
+    --   requires = {
+    --     { "ray-x/guihua.lua", run = "cd lua/fzy && make" },
+    --     { "neovim/nvim-lspconfig" },
+    --     config = function()
+    --       require("navigator").setup()
+    --     end,
+    --   },
     -- },
   }
 end
