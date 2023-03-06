@@ -193,6 +193,35 @@ M.set_lsp_lines_keymap = function()
 end
 
 M.config = function()
+  -- -- RMT keybindings
+  -- unmap shift X
+  lvim.keys.normal_mode["<S-x>"] = ""
+  lvim.keys.visual_mode["<S-x>"] = ""
+  -- Save on CTRL-S
+  lvim.keys.normal_mode["<C-s>"] = ":<Esc>:w<CR>"
+  -- maximizer toggle
+  lvim.keys.normal_mode["F3"] = "<Cmd>lua require('maximize').toggle()<CR>"
+  -- Yank to end of line
+  lvim.keys.normal_mode["Y"] = "y$"
+
+  -- Centering of cursor in search and join commands
+  lvim.keys.normal_mode["n"] = "nzzzv"
+  lvim.keys.normal_mode["N"] = "Nzzzv"
+  lvim.keys.normal_mode["J"] = "mzJ'z"
+  -- granularity in escape and undo
+  lvim.keys.insert_mode[","] = ",<c-g>u"
+  lvim.keys.insert_mode["."] = ".<c-g>u"
+  lvim.keys.insert_mode[";"] = ";<c-g>u"
+  lvim.keys.insert_mode[":"] = ":<c-g>u"
+  lvim.keys.insert_mode["!"] = "!<c-g>u"
+  lvim.keys.insert_mode["?"] = "?<c-g>u"
+  -- Last Buffer used
+  lvim.keys.normal_mode["Q"] = ":b#<CR>"
+
+  -- -- Commands to slide text up and down
+  lvim.keys.visual_mode["<C-j>"] = ":m '>+1<CR>gv=gv"
+  lvim.keys.visual_mode["<C-k>"] = ":m '<-2<CR>gv=gv"
+
   -- Additional keybindings
   -- =========================================
   lvim.keys.normal_mode["<CR>"] = {

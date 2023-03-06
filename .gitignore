@@ -52,3 +52,7 @@ luac.out
 plugin/packer_compiled.lua
 
 .luacheckcache
+
+# Mac
+*.DS_Store
+

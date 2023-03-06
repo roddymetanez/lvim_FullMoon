@@ -235,6 +235,18 @@ M.config = function()
       config = function()
         require("neogen").setup {
           enabled = true,
+          languages = {
+            lua = {
+              template = {
+                annotation_convention = "emmylua",
+              },
+            },
+            csharp = {
+              template = {
+                annotation_convention = "xmldoc",
+              },
+            },
+          },
         }
       end,
       dependencies = "nvim-treesitter/nvim-treesitter",
@@ -789,6 +801,15 @@ M.config = function()
       end,
       event = "VeryLazy",
       enabled = lvim.builtin.mind.active,
+    },
+    {
+      "kylechui/nvim-surround",
+      tag = "*", -- Use for stability; omit to use `main` branch for the latest features
+      config = function()
+        require("nvim-surround").setup {
+          -- Configuration here, or leave empty to use defaults
+        }
+      end,
     },
   }
 end
