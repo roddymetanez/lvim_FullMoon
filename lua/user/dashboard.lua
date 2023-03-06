@@ -15,7 +15,7 @@ M.config = function()
   local plugins = ""
   local date = os.date "%a %d %b"
   if vim.fn.has "linux" == 1 or vim.fn.has "mac" == 1 then
-    local handle = io.popen 'fd -d 2 . $HOME"/.local/share/lunarvim/site/pack/packer" | grep pack | wc -l | tr -d "\n" '
+    local handle = io.popen 'fd -d 2 . $HOME"/.local/share/lunarvim/site/pack/lazy" | grep pack | wc -l | tr -d "\n" '
     plugins = handle:read "*a"
     handle:close()
 
@@ -29,8 +29,8 @@ M.config = function()
     val = "└─ "
       .. kind.cmp_kind.Module
       .. " "
-      .. string.format("% 3d", plugins)
-      .. " plugins  v"
+      .. string.format("% 4d", plugins)
+      .. " plugins  "
       .. vim.version().major
       .. "."
       .. vim.version().minor

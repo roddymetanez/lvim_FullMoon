@@ -56,11 +56,17 @@ M.config = function()
         },
         format_done = {},
       },
-      hover = { enabled = true },
+      hover = { enabled = false },
+      signature = { enabled = false, auto_open = { enabled = false } },
+      override = {
+        ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+        ["vim.lsp.util.stylize_markdown"] = true,
+        ["cmp.entry.get_documentation"] = true,
+      },
     },
     cmdline = {
       format = {
-        filter = { pattern = "^:%s*!", icon = "", ft = "sh" },
+        filter = { pattern = "^:%s*!", icon = " ", ft = "sh" },
         IncRename = {
           pattern = "^:%s*IncRename%s+",
           icon = " ",
@@ -76,6 +82,10 @@ M.config = function()
     },
     views = {
       cmdline_popup = {
+        border = {
+          style = "none",
+          padding = { 1, 2 },
+        },
         win_options = {
           winblend = 5,
           winhighlight = {
@@ -97,12 +107,20 @@ M.config = function()
         filter = { event = "msg_showmode" },
       },
       {
-        filter = { event = "msg_show", kind = "search_count" },
-        opts = { skip = true },
+        filter = {
+          event = "msg_show",
+          find = "%d+L, %d+B",
+        },
+        view = "mini",
       },
       {
-        view = "split",
-        filter = { event = "msg_show", min_height = 10 },
+        view = "cmdline_output",
+        filter = { cmdline = "^:", min_height = 5 },
+        -- BUG: will be fixed after https://github.com/neovim/neovim/issues/21044 gets merged
+      },
+      {
+        filter = { event = "msg_show", kind = "search_count" },
+        opts = { skip = true },
       },
       {
         filter = {
@@ -141,6 +159,10 @@ M.config = function()
       },
       {
         filter = { find = "No active Snippet" },
+        opts = { skip = true },
+      },
+      {
+        filter = { find = "waiting for cargo metadata" },
         opts = { skip = true },
       },
     },

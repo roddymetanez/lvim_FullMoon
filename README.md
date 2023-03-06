@@ -1,5 +1,7 @@
 # Bloated LunarVim
 
+*RMT - Fork from AbzCoding/Lvim*
+
 Do not use as is, use it as a source of inspiration.
 
 I've customized my ZSH/Tmux/[Wezterm](https://github.com/abzcoding/wezterm) too much, so it might not work properly 😅
@@ -40,10 +42,12 @@ I've customized my ZSH/Tmux/[Wezterm](https://github.com/abzcoding/wezterm) too 
   - [Plugin: Ultest](#plugin-ultest)
   - [Plugin: Neotest](#plugin-neotest)
   - [Plugin: Spectre](#plugin-spectre)
+  - [Plugin: SSR](#plugin-ssr)
   - [Plugin: Copilot](#plugin-copilot)
   - [Plugin: Lsp_Lines](#plugin-lsp_lines)
   - [Plugin: Overseer](#plugin-overseer)
   - [Plugin: NeoTree](#plugin-neotree)
+  - [Plugin: Mind](#plugin-mind)
 - [Troubleshooting](#troubleshooting)
 
 <!-- vim-markdown-toc -->
@@ -113,7 +117,7 @@ lvim.plugins = {
   - `lvim.builtin.smooth_scroll= ""`
 - if you want an obvious focused window, and you don't get seizures from it
   - `lvim.builtin.nonumber_unfocus = true`
-- choose between [hop](https://github.com/phaazon/hop.nvim) and [lightspeed](https://github.com/ggandor/lightspeed.nvim) as your favorite motion provider
+- choose between [hop](https://github.com/phaazon/hop.nvim) and [leap](https://github.com/ggandor/leap.nvim) as your favorite motion provider
   - `lvim.builtin.motion_provider = "hop"`
 - choose between [filename->incline](https://github.com/b0o/incline.nvim) and [treesitter->winbar](https://github.com/fgheng/winbar.nvim) or [navic](https://github.com/SmiteshP/nvim-navic) as your winbar provider
   - `lvim.builtin.winbar_provider = "treesitter"`
@@ -171,7 +175,7 @@ brew install node
 mv ~/.config/lvim ~/.config/lvim_backup
 git clone https://github.com/abzcoding/lvim.git ~/.config/lvim
 lvim +LvimUpdate +LvimCacheReset +q
-lvim # run :PackerSync
+lvim # run :Lazy sync
 ```
 
 ### Java
@@ -221,7 +225,7 @@ Use `Tab` to list available servers.
 ```shell
 cd ~/.config/lvim
 git pull
-lvim # run :PackerSync
+lvim # run :Lazy sync
 ```
 
 ### Recommended Linters
@@ -403,11 +407,12 @@ _Symbols Outline_
 - [clangd_extensions.nvim](https://github.com/p00f/clangd_extensions.nvim)
 - [crates.nvim](https://github.com/Saecki/crates.nvim)
 - [refactoring.nvim](https://github.com/ThePrimeagen/refactoring.nvim)
+- [ssr.nvim](https://github.com/cshuaimin/ssr.nvim)
 
 ### Optional Plugins
 
 - [Hop](https://github.com/phaazon/hop.nvim)
-- [Lightspeed](https://github.com/ggandor/lightspeed.nvim)
+- [Leap](https://github.com/ggandor/leap.nvim)
 - [remember.nvim](https://github.com/vladdoster/remember.nvim)
 - [Tabnine](https://github.com/tzachar/compe-tabnine)
 - [Persistence](https://github.com/folke/persistence.nvim)
@@ -449,6 +454,9 @@ _Symbols Outline_
 - [nvim-dap-vscode-js](https://github.com/mxsdev/nvim-dap-vscode-js)
 - [inc-rename](https://github.com/smjonas/inc-rename.nvim)
 - [hlargs.nvim](https://github.com/m-demare/hlargs.nvim)
+- [cmake-tools.nvim](https://github.com/Civitasv/cmake-tools.nvim)
+- [lsp-inlayhints.nvim](https://github.com/lvimuser/lsp-inlayhints.nvim)
+- [mind.nvim](https://github.com/phaazon/mind.nvim)
 
 </details>
 
@@ -513,15 +521,15 @@ Note that,
 
 ### Motion
 
-| Key                         | Mode | Action                  | Plugin or Mapping                                                   |
-| --------------------------- | :--: | ----------------------- | ------------------------------------------------------------------- |
-| <kbd>f</kbd>                |  𝐍   | find next character     | <small>HopChar1CurrentLineAC</small> or <small>Lightspeed_f</small> |
-| <kbd>F</kbd>                |  𝐍   | find previous character | <small>HopChar1CurrentLineBC</small> or <small>Lightspeed_F</small> |
-| <kbd>s</kbd>                |  𝐍   | find character          | <small>HopChar2MW</small> or <small>Lightspeed_s</small>            |
-| <kbd>S</kbd>                |  𝐍   | find word               | <small>HopWordMW</small> or <small>Lightspeed_S</small>             |
-| <kbd>Alt</kbd>+<kbd>a</kbd> |  𝐈   | select all              | <small>ggVG</small>                                                 |
-| <kbd>Alt</kbd>+<kbd>a</kbd> |  𝐍   | increment number        | <small>C-A</small>                                                  |
-| <kbd>Alt</kbd>+<kbd>x</kbd> |  𝐍   | decrement number        | <small>C-X</small>                                                  |
+| Key                         | Mode | Action                  | Plugin or Mapping                                             |
+| --------------------------- | :--: | ----------------------- | ------------------------------------------------------------- |
+| <kbd>f</kbd>                |  𝐍   | find next character     | <small>HopChar1CurrentLineAC</small> or <small>leap_f</small> |
+| <kbd>F</kbd>                |  𝐍   | find previous character | <small>HopChar1CurrentLineBC</small> or <small>leap_F</small> |
+| <kbd>s</kbd>                |  𝐍   | find character          | <small>HopChar2MW</small> or <small>leap_s</small>            |
+| <kbd>S</kbd>                |  𝐍   | find word               | <small>HopWordMW</small> or <small>leap_S</small>             |
+| <kbd>Alt</kbd>+<kbd>a</kbd> |  𝐈   | select all              | <small>ggVG</small>                                           |
+| <kbd>Alt</kbd>+<kbd>a</kbd> |  𝐍   | increment number        | <small>C-A</small>                                            |
+| <kbd>Alt</kbd>+<kbd>x</kbd> |  𝐍   | decrement number        | <small>C-X</small>                                            |
 
 ### LSP
 
@@ -696,6 +704,13 @@ Note that,
 | <kbd>Space</kbd>+<kbd>R</kbd>+<kbd>w</kbd> |  𝐍   | Replace visually selected word |
 | <kbd>Space</kbd>+<kbd>R</kbd>+<kbd>f</kbd> |  𝐍   | Replace word in current buffer |
 
+### Plugin: SSR
+
+| Key                                        | Mode | Action                                          |
+| ------------------------------------------ | :--: | ----------------------------------------------- |
+| <kbd>Space</kbd>+<kbd>r</kbd>              |  𝐕   | Structural replace confirm using `<leader><cr>` |
+| <kbd>Space</kbd>+<kbd>R</kbd>+<kbd>s</kbd> |  𝐍   | Structural replace confirm using `<leader><cr>` |
+
 ### Plugin: Copilot
 
 | Key                          | Mode | Action                              |
@@ -743,6 +758,20 @@ Note that,
 | <kbd>l</kbd>                  |  𝐍   | Open                             |
 | <kbd>P</kbd>                  |  𝐍   | Toggle preview                   |
 | <kbd>/</kbd>                  |  𝐍   | Fuzzy finder                     |
+
+### Plugin: Mind
+
+| Key                                        | Mode | Action            |
+| ------------------------------------------ | :--: | ----------------- |
+| <kbd>Space</kbd>+<kbd>M</kbd>+<kbd>M</kbd> |  𝐍   | Open Main Tree    |
+| <kbd>Space</kbd>+<kbd>M</kbd>+<kbd>m</kbd> |  𝐍   | Open Local Tree   |
+| <kbd><cr></kbd>                            |  𝐍   | open data         |
+| <kbd><tab></kbd>                           |  𝐍   | toggle node       |
+| <kbd><s-tab></kbd>                         |  𝐍   | toggle parent     |
+| <kbd>/</kbd>                               |  𝐍   | select path       |
+| <kbd>$</kbd>                               |  𝐍   | change icons menu |
+| <kbd>c</kbd>                               |  𝐍   | create new node   |
+| <kbd>q</kbd>                               |  𝐍   | quit              |
 
 </details>
 

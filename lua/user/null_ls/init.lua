@@ -10,6 +10,7 @@ M.config = function()
   if not status_ok then
     return
   end
+  local vale_config = vim.env.HOME .. "/.vale.ini"
   local semgrep_rule_folder = vim.env.HOME .. "/.config/semgrep/semgrep-rules/"
   local use_semgrep = false
   if vim.fn.filereadable(semgrep_rule_folder .. "template.yaml") then
@@ -38,6 +39,7 @@ M.config = function()
     },
     nls.builtins.formatting.stylua,
     nls.builtins.formatting.goimports,
+    nls.builtins.formatting.gofumpt,
     nls.builtins.formatting.cmake_format,
     nls.builtins.formatting.scalafmt,
     nls.builtins.formatting.sqlformat,
@@ -79,9 +81,11 @@ M.config = function()
     nls.builtins.diagnostics.statix,
     nls.builtins.diagnostics.markdownlint.with {
       filetypes = { "markdown" },
+      extra_args = { "-r", "~MD013" },
     },
     nls.builtins.diagnostics.vale.with {
       filetypes = { "markdown" },
+      extra_args = { "--config", vale_config },
     },
     nls.builtins.diagnostics.revive.with {
       condition = function(utils)
@@ -89,6 +93,8 @@ M.config = function()
       end,
     },
     nls.builtins.code_actions.shellcheck,
+    -- WARN: broken on neovim-head because of `nvim.treesitter.get_node_at_pos` being deprecated
+    -- nls.builtins.code_actions.gomodifytags,
     nls.builtins.code_actions.eslint_d.with {
       condition = function(utils)
         return utils.root_has_file { ".eslintrc", ".eslintrc.js" }
@@ -99,6 +105,7 @@ M.config = function()
     -- nls.builtins.formatting.google_java_format,
     -- nls.builtins.code_actions.proselint,
     -- nls.builtins.diagnostics.proselint,
+    -- HACK: using my own version for now
     custom_go_actions.gomodifytags,
     custom_go_actions.gostructhelper,
     custom_md_hover.dictionary,
@@ -110,6 +117,10 @@ M.config = function()
         filetypes = { "typescript", "javascript", "lua", "c", "cpp", "go", "python", "java", "php" },
       }
     )
+  end
+  local ts_found, typescript_code_actions = pcall(require, "typescript.extensions.null-ls.code-actions")
+  if ts_found then
+    table.insert(sources, typescript_code_actions)
   end
 
   -- you can either config null-ls itself

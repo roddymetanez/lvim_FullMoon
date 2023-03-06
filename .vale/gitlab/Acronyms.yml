@@ -37,6 +37,7 @@ exceptions:
   - CNAME
   - CONOP
   - CORE
+  - CORS
   - CPU
   - CRIME
   - CSPM
@@ -54,6 +55,8 @@ exceptions:
   - DLL
   - DNS
   - DOM
+  - DOS
+  - DTD
   - DSA
   - DSS
   - DVCS
@@ -85,10 +88,12 @@ exceptions:
   - GPL
   - GPU
   - GUI
+  - GUID
   - HAML
   - HDD
   - HEAD
   - HIPAA
+  - HMAC
   - HMP
   - HSTS
   - HTML
@@ -99,6 +104,7 @@ exceptions:
   - IBM
   - ICMP
   - IDE
+  - IDOR
   - IID
   - IMAP
   - IOPS
@@ -154,6 +160,7 @@ exceptions:
   - RAID
   - RAM
   - RBAC
+  - RCE
   - RDP
   - REST
   - RFB
@@ -178,12 +185,14 @@ exceptions:
   - SDN
   - SELF
   - SEO
+  - SET
   - SFTP
   - SHA
   - SIEM
   - SLA
   - SMS
   - SMTP
+  - SOAP
   - SOAR
   - SOC
   - SOP
@@ -198,11 +207,13 @@ exceptions:
   - SSL
   - SSO
   - SSRF
+  - SSTI
   - SVG
   - SVN
   - SYN
   - TBA
   - TCP
+  - TEE
   - TIFF
   - TIP
   - TLD
@@ -225,10 +236,12 @@ exceptions:
   - VPN
   - WAF
   - WIP
+  - WSDL
   - WSL
   - XDR
   - XML
   - XSS
+  - XXE
   - YAML
   - ZAP
   - ZIP

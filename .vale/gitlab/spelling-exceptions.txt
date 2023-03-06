@@ -42,6 +42,7 @@ ChaosKube
 ChatOps
 Citrix
 Citus
+ClickJacking
 Cloudwatch
 Cobertura
 Codepen
@@ -62,6 +63,7 @@ Datadog
 Debian
 Decompressor
 Denormalization
+Deserialization
 Deserializer
 DevOps
 Disqus
@@ -78,6 +80,7 @@ ETag
 Ecto
 Elasticsearch
 Excon
+Exfiltrate
 Facebook
 Falco
 Fastzip
@@ -129,6 +132,7 @@ Immer
 Ingress
 Inode
 Istio
+JSONP
 Jaeger
 JavaScript
 Javafuzz
@@ -146,6 +150,7 @@ Keycloak
 Keymap
 Kibana
 Kinesis
+Kiterunner
 Klar
 Knative
 Kramdown
@@ -187,6 +192,7 @@ Nanoc
 Neogen
 Neoscroll
 Neovim
+Netcat
 Netlify
 Nginx
 Nokogiri
@@ -239,6 +245,7 @@ Semgrep
 Sendmail
 Sentry
 Shibboleth
+Shodan
 Shopify
 Sidekiq
 Silverlight
@@ -291,6 +298,7 @@ Webservice
 Wireshark
 Wordpress
 Worldline
+XInclude
 Xcode
 Xeon
 YouTrack
@@ -313,6 +321,7 @@ approvers
 architected
 architecting
 archiver
+asnmap
 auditability
 autocommands
 autocomplete
@@ -394,6 +403,7 @@ crontabs
 crosslinked
 crosslinking
 crosslinks
+crt
 cyber
 cybersecurity
 datasource
@@ -422,9 +432,14 @@ deprovisions
 dequarantine
 dequarantined
 dequarantining
+deserialization
+deserialize
+dirsearch
 disambiguates
 discoverability
 dismissable
+dnsgen
+dnsx
 dogfood
 dogfooding
 dogfoods
@@ -436,6 +451,7 @@ enqueued
 enqueues
 enum
 enums
+exfiltration
 expirable
 failover
 failovers
@@ -444,6 +460,7 @@ falsy
 fastlane
 favicon
 favorited
+ffuf
 filetype
 filetypes
 firewalled
@@ -452,10 +469,14 @@ formatters
 ftdetect
 ftplugin
 fuzzer
+gau
 gb
 gettext
 gitlabsos
+gitrob
 globals
+gobuster
+golang
 goroutine
 goroutines
 goto
@@ -473,6 +494,7 @@ hotfixes
 hotfixing
 http
 https
+httpx
 idempotence
 idmapper
 inclusivity
@@ -483,6 +505,7 @@ innersourcing
 interdependencies
 interdependency
 interruptible
+ipinfo
 irker
 issuables
 jQuery
@@ -495,11 +518,14 @@ jumplist
 kanban
 kanbans
 kaniko
+katana
+keyhacks
 keyset
 keyspace
 keytab
 keytabs
 kubectl
+kubelet
 kubernetes
 lang
 ldapsearch
@@ -552,6 +578,7 @@ monorepo
 monorepos
 multiline
 mutex
+naabu
 nameserver
 nameservers
 namespace
@@ -561,6 +588,8 @@ namespacing
 namespacings
 negatable
 neovim
+nginx
+nmap
 noteable
 noteables
 npm
@@ -574,10 +603,12 @@ offboarding
 offboards
 onboarding
 onedarker
+openjdk
 parallelization
 parallelizations
 paravirtualization
 passwordless
+pastebin
 performant
 pgLoader
 phaser
@@ -589,6 +620,7 @@ polyfill
 polyfills
 pooler
 postfixed
+postgres
 postgres.ai
 precompile
 precompiled
@@ -709,6 +741,7 @@ sparkline
 sparklines
 spectre
 spidering
+sqlmap
 starrer
 starrers
 storable
@@ -718,8 +751,10 @@ strikethrough
 strikethroughs
 stunnel
 stylelint
+subbrute
 subchart
 subcharts
+subfinder
 subfolder
 subfolders
 subgraph
@@ -750,6 +785,7 @@ subtest
 subtests
 subtree
 subtrees
+subzy
 sudo
 supercookie
 supercookies
@@ -775,6 +811,7 @@ timeboxes
 timeboxing
 timecop
 tiptap
+tlsx
 tmux
 tmux
 todo
@@ -798,7 +835,9 @@ treesitter
 triaged
 triages
 triaging
+truffleHog
 truthy
+ubuntu
 ui
 unapplied
 unapprove
@@ -912,10 +951,13 @@ virtualizing
 vulnerabilities
 walkthrough
 walkthroughs
+wayback
 webpack
 webserver
 websocket
 websockets
+wfuzz
+whatweb
 whitepaper
 whitepapers
 wireframe
@@ -924,4 +966,3 @@ wireframes
 wireframing
 worktree
 worktrees
-z
